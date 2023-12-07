@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 function SearchBar({ onSubmit }) {
+  const [term, setTerm] = useState("");
+
   const searchEdtStyle = {
     width: "100%",
     height: "30px",
@@ -10,15 +14,27 @@ function SearchBar({ onSubmit }) {
     outline: "none",
   };
 
-  const handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
-      onSubmit(e.target.value);
-    }
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onSubmit(term);
+  };
+
+  const handleChange = (e) => {
+    //  setTerm(e.target.value.replace(/[a-z]/, ""));   //with this users cant type lower letters
+    setTerm(e.target.value);
   };
 
   return (
     <div className="SearchBar">
-      <input type="text" style={searchEdtStyle} onKeyUp={handleKeyUp} />
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          style={searchEdtStyle}
+          onChange={handleChange}
+          value={term}
+        />
+      </form>
     </div>
   );
 }
